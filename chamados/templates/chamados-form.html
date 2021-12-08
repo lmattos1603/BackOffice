@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if chamado %}
+        <h1 class="display-4">Alterar Ticket #{{chamado.id}}</h1>
+    {% else %}
+        <h1 class="display-4">Incluir Ticket</h1>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="col-2"><a href="{% url 'list_chamados' %}" class="btn btn-outline-secondary">⇦ Voltar</a></div>
+    <div class="col-10 mt-4">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group mt-3">
+            <label >Título</label>
+            <input type="text" class="form-control" id="titulo" value="{{chamado.titulo}}" placeholder="Insira o Título" name="titulo" required>
+        </div>
+        <div class="form-group">
+            <label>Descrição</label>
+            <textarea class="form-control" id="descricao" placeholder="Insira uma Descrição" name="descricao" rows="4" required>{{chamado.descricao}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="setor">Setor</label>
+            <select class="form-control" id="setor" name="setor">
+              <option>{{ chamado.setor }}</option>
+              {% for setor in setores %}
+              <option>{{ setor.nome }}</option>
+              {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Status</label>
+            {% if user.is_superuser %}
+            <select class="form-control" name="status">
+                {% if chamado %}<option>{{ chamado.status }}</option>{% endif %}
+                <option>Novo</option>
+                <option>Em resolução</option>
+                <option>Atendido</option>
+            </select>
+            {% else %}
+            <select class="form-control" name="status">
+                {% if chamado %}
+                <option>{{ chamado.status }}</option>
+                {% else %}
+                <option>Novo</option>
+                {% endif %}
+            </select>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="usuabr">Usuário Solicitação</label>
+            <select class="form-control" id="usuabr" name="usuabr">
+              {% if chamado %}
+                    <option>{{ chamado.usuabr }}</option>
+              {% else %}
+                  {% if user.is_authenticated %}
+                      <option>{{ user.username }}</option>
+                  {% endif %}
+              {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="usures">Usuário responsável</label>
+            <select class="form-control" id="usures" name="usures">
+              {% for user in users %}
+              {% if user.is_superuser %}
+                <option>{{ user.username }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Imagem</label>
+            {{ form.foto }}
+        </div>
+        {% if chamado.status == 'Atendido' %}
+        <div class="form-group mt-5">
+            <label>Este chamado foi finalizado pelo operador.</label>
+        </div>
+        {% else %}
+        <div class="form-group mt-5">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            {% if user.is_superuser %}
+            {% if chamado %}
+                <a href="{% url 'delete_chamados' chamado.id %}" class="btn btn-danger">Fechar</a>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </form>
+    </div>
+    <div class="col-2"></div>
+{% endblock %}

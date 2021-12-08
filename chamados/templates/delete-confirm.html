@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h2 class="display-4">Ticket #{{ chamado.id }} - {{ chamado.titulo }}</h2>
+{% endblock %}
+
+{% block content %}
+<div class="col"></div>
+<div class="col-12">
+    <h2>Tem Certeza que deseja fechar esta solicitação?</h2>
+    <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sim</button>
+    <a href="{% url 'update_chamados' chamado.id %}" class="btn btn-secondary">Não</a>
+</form>
+</div>
+<div class="col "></div>
+
+{% endblock %}

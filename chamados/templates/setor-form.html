@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if setor %}
+        <h1 class="display-4">Alterar Setor #{{setor.id}} - {{setor.nome}}</h1>
+    {% else %}
+        <h1 class="display-4">Incluir Setor</h1>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="col-2"><a href="{% url 'list_setores' %}" class="btn btn-outline-secondary"><<</a></div>
+    <div class="col-10 mt-4">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group mt-3">
+            <label >Nome</label>
+            <input type="text" class="form-control" id="nome" value="{{setor.nome}}" placeholder="Insira um Nome" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label>Descrição</label>
+            <textarea class="form-control" id="descricao" placeholder="Insira uma Descrição" name="descricao" rows="4" required>{{setor.descricao}}</textarea>
+        </div>
+
+        <div class="form-group mt-5">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            {% if setor %}
+                <a href="{% url 'delete_setor' setor.id %}" class="btn btn-danger">Excluir</a>
+            {% endif %}
+        </div>
+
+
+    </form>
+    </div>
+    <div class="col-2"></div>
+{% endblock %}
