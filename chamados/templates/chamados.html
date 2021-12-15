@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <div class="col-6"></div>
+    <div class="col"><h2 class="display-4">Tickets</h2></div>
+    <div class="col"></div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="col"></div>
+    <div class="col-10">
+
+        <a class="btn btn-success " href="{% url 'create_chamados' %}">Novo</a>
+        {% if user.is_superuser %}
+            {% for chamado in chamados %}
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne"">
+                      <h5 class="mb-0">
+                        {% if chamado.status == 'Novo' %}
+                            <button class="btn btn-outline-danger btn-lg btn-block disabled" type="button" data-toggle="collapse" data-target="#collapse{{chamado.id}}" aria-expanded="true" aria-controls="collapse{{chamado.id}}">
+                              #{{ chamado.id }} - {{ chamado.titulo }}
+                            </button>
+                        {% elif chamado.status == 'Em resolução' %}
+                            <button class="btn btn-outline-warning btn-lg btn-block disabled" type="button" data-toggle="collapse" data-target="#collapse{{chamado.id}}" aria-expanded="true" aria-controls="collapse{{chamado.id}}">
+                              #{{ chamado.id }} - {{ chamado.titulo }}
+                            </button>
+                        {% else %}
+                            <button class="btn btn-outline-success btn-lg btn-block disabled" type="button" data-toggle="collapse" data-target="#collapse{{chamado.id}}" aria-expanded="true" aria-controls="collapse{{chamado.id}}">
+                              #{{ chamado.id }} - {{ chamado.titulo }}
+                            </button>
+                        {% endif %}
+                      </h5>
+                      <h5 class="mb-0">
+                          <button class="btn btn-link disabled">
+                              Usuário de Geração: {{ chamado.usuabr }}
+                          </button>
+                      </h5>
+                    </div>
+
+                    <div id="collapse{{chamado.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                      <div class="card-body">
+                          <h6>Descrição:</h6>
+                          <p>{{ chamado.descricao }}</p>
+                      </div>
+                      <div class="card-body">
+                          {% if chamado.foto %}
+                          <h6>Imagem:</h6>
+                          <img src="media/{{ chamado.foto }}" class="img-fluid" alt="Imagem responsiva">
+                          {% endif %}
+                      </div>
+                      <div class="card-body">
+                          <a href="{% url 'update_chamados' chamado.id %}" class="btn btn-outline-success">Editar<th scope="col" colspan="2"></a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <a class="btn btn-outline-danger disabled"></a> <label class="mt-3">Novo</label>
+            <a class="btn btn-outline-warning disabled"></a> Em resolução
+            <a class="btn btn-outline-success disabled"></a> Atendido
+            <div class="col"></div>
+
+        {% else %}
+
+            {% for chamado in chamados %}
+                {% if user.username == chamado.usuabr %}
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne"">
+                              <h5 class="mb-0">
+                                {% if chamado.status == 'Novo' %}
+                                    <button class="btn btn-outline-danger btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapse{{chamado.id}}" aria-expanded="true" aria-controls="collapse{{chamado.id}}">
+                                      #{{ chamado.id }} - {{ chamado.titulo }}
+                                    </button>
+                                {% elif chamado.status == 'Em resolução' %}
+                                    <button class="btn btn-outline-warning btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapse{{chamado.id}}" aria-expanded="true" aria-controls="collapse{{chamado.id}}">
+                                      #{{ chamado.id }} - {{ chamado.titulo }}
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-outline-success btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapse{{chamado.id}}" aria-expanded="true" aria-controls="collapse{{chamado.id}}">
+                                      #{{ chamado.id }} - {{ chamado.titulo }}
+                                    </button>
+                                {% endif %}
+                              </h5>
+                              <h5 class="mb-0">
+                                  <button class="btn btn-link disabled">
+                                      Usuário de Geração: {{ chamado.usuabr }}
+                                  </button>
+                              </h5>
+                            </div>
+
+                            <div id="collapse{{chamado.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                              <div class="card-body">
+                                  <h6>Descrição:</h6>
+                                  <p>{{ chamado.descricao }}</p>
+                              </div>
+                              <div class="card-body">
+                                  {% if chamado.foto %}
+                                  <h6>Imagem:</h6>
+                                  <img src="media/{{ chamado.foto }}" class="img-fluid" alt="Imagem responsiva">
+                                  {% endif %}
+                              </div>
+                              <div class="card-body">
+                                  <a href="{% url 'update_chamados' chamado.id %}" class="btn btn-outline-success">Editar<th scope="col" colspan="2"></a>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        <a class="btn btn-outline-danger disabled"></a> <label class="mt-3">Novo</label>
+        <a class="btn btn-outline-warning disabled"></a> Em resolução
+        <a class="btn btn-outline-success disabled"></a> Atendido
+        {% endif %}
+    </div>
+    <div class="col-"></div>
+
+
+
+{% endblock %}

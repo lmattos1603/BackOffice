@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h2 class="display-4">Setor #{{ setor.id }} - {{ setor.nome }}</h2>
+{% endblock %}
+
+{% block content %}
+<div class="col"></div>
+<div class="col-12">
+    <h2>Tem Certeza que deseja excluir este setor?</h2>
+    <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sim</button>
+    <a href="{% url 'update_setor' setor.id %}" class="btn btn-secondary">Não</a>
+</form>
+</div>
+<div class="col "></div>
+
+{% endblock %}

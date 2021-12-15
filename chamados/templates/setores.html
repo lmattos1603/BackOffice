@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    <div class="col-6"></div>
+    <div class="col">
+        <h2 class="display-4">Setores</h2>
+    </div>
+    <div class="col"></div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="col"></div>
+    <div class="col-10">
+
+        <a class="btn btn-success " href="{% url 'create_setor' %}">Novo</a>
+
+            <table class="table mt-4">
+                  <thead>
+                  <tr class="table-active">
+                    <th scope="col"></th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Ação</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                        {% for setor in setores %}
+                        <tr>
+                          <th scope="row">{{ setor.id }}</th>
+                          <td>{{ setor.nome }}</td>
+                          <td>{{ setor.descricao }}</td>
+                          <td><a href="{% url 'update_setor' setor.id %}" class="btn btn-outline-success">Editar</a></td>
+                        </tr>
+                        {% endfor %}
+                  </tbody>
+            </table>
+        <div class="col"></div>
+
+{% endblock %}
