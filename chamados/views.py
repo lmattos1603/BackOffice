@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 
 from .forms import ChamadoForm, SetorForm
 from .models import Chamado, Setor
@@ -11,8 +12,28 @@ from .models import Chamado, Setor
 
 @login_required(login_url='/users/login')
 def list_chamados(request):
-    chamados = Chamado.objects.all()
-    return render(request, 'chamados.html', {'chamados': chamados})
+    pUser = ""
+    pStatus = ""
+
+    if request.method == 'POST':
+        pUser = request.POST.get('pUser')
+        pStatus = request.POST.get('pStatus')
+
+    chamados_list = Chamado.objects.all().order_by('id')
+    users = User.objects.all()
+
+    paginator = Paginator(chamados_list, 5)
+
+    page = request.GET.get('page')
+
+    chamados = paginator.get_page(page)
+
+    if pUser == "":
+      return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pStatus': pStatus})
+    elif pStatus == "":
+      return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pUser': pUser})
+    else:
+      return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pUser': pUser, 'pStatus': pStatus})
 
 @login_required(login_url='/users/login')
 def create_chamados(request):
