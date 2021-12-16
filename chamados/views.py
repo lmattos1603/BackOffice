@@ -12,12 +12,32 @@ from .models import Chamado, Setor
 
 @login_required(login_url='/users/login')
 def list_chamados(request):
-    pUser = ""
-    pStatus = ""
 
     if request.method == 'POST':
+        pUser = ""
+        pStatus = ""
         pUser = request.POST.get('pUser')
         pStatus = request.POST.get('pStatus')
+
+        chamados = Chamado.objects.all()
+        users = User.objects.all()
+
+        chamados_all = Chamado.objects.all().order_by('id')
+
+        paginator = Paginator(chamados_all, 5)
+
+        page = request.GET.get('page')
+
+        chamados_list = paginator.get_page(page)
+
+        if pUser == "" and pStatus != "":
+            return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pStatus': pStatus})
+        elif pStatus == "" and pUser != "":
+            return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pUser': pUser})
+        elif pStatus != "" and pUser != "":
+            return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pUser': pUser, 'pStatus': pStatus})
+
+        return render(request, 'chamados-list.html', {'chamados': chamados_list, 'users': users, 'pUser': pUser, 'pStatus': pStatus})
 
     chamados_list = Chamado.objects.all().order_by('id')
     users = User.objects.all()
@@ -28,12 +48,7 @@ def list_chamados(request):
 
     chamados = paginator.get_page(page)
 
-    if pUser == "":
-      return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pStatus': pStatus})
-    elif pStatus == "":
-      return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pUser': pUser})
-    else:
-      return render(request, 'chamados.html', {'chamados': chamados, 'users': users, 'pUser': pUser, 'pStatus': pStatus})
+    return render(request, 'chamados-list.html', {'chamados': chamados, 'users': users})
 
 @login_required(login_url='/users/login')
 def create_chamados(request):
