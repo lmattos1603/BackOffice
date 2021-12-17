@@ -39,7 +39,7 @@ def list_chamados(request):
 
         return render(request, 'chamados-list.html', {'chamados': chamados_list, 'users': users, 'pUser': pUser, 'pStatus': pStatus})
 
-    chamados_list = Chamado.objects.all().order_by('id')
+    chamados_list = Chamado.objects.all().order_by('-id')
     users = User.objects.all()
 
     paginator = Paginator(chamados_list, 5)
