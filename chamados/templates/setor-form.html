@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-2"><a href="{% url 'list_setores' %}" class="btn btn-outline-secondary"><<</a></div>
+    <div class="col-2"><a href="{% url 'list_setores' %}" class="btn btn-outline-secondary">⇦ Voltar</a></div>
     <div class="col-10 mt-4">
         <form method="post" enctype="multipart/form-data">
         {% csrf_token %}

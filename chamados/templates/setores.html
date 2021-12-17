@@ -14,7 +14,7 @@
     <div class="col"></div>
     <div class="col-10">
 
-        <a class="btn btn-success " href="{% url 'create_setor' %}">Novo</a>
+        <a class="btn btn-success " href="{% url 'create_setor' %}"><img src="../static/img/add.png"> Novo</a>
 
             <table class="table mt-4">
                   <thead>
@@ -31,7 +31,7 @@
                           <th scope="row">{{ setor.id }}</th>
                           <td>{{ setor.nome }}</td>
                           <td>{{ setor.descricao }}</td>
-                          <td><a href="{% url 'update_setor' setor.id %}" class="btn btn-outline-success">Editar</a></td>
+                          <td><a href="{% url 'update_setor' setor.id %}" class="btn btn-outline-success">✏ Editar</a></td>
                         </tr>
                         {% endfor %}
                   </tbody>
