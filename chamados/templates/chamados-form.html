@@ -79,6 +79,11 @@
         <div class="form-group mt-5">
             <label>Este chamado foi finalizado pelo operador.</label>
         </div>
+            {% if user.is_superuser %}
+                <div class="form-group mt-5">
+                    <a href="{% url 'delete_chamados' chamado.id %}" class="btn btn-danger">Fechar</a>
+                </div>
+            {% endif %}
         {% else %}
         <div class="form-group mt-5">
             <button type="submit" class="btn btn-primary">Salvar</button>

@@ -22,7 +22,7 @@ def list_chamados(request):
         chamados = Chamado.objects.all()
         users = User.objects.all()
 
-        chamados_all = Chamado.objects.all().order_by('id')
+        chamados_all = Chamado.objects.all().order_by('-id')
 
         paginator = Paginator(chamados_all, 5)
 
